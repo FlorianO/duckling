@@ -681,7 +681,7 @@ ruleNoon :: Rule
 ruleNoon = Rule
   { name = "noon"
   , pattern =
-    [ regex "mittags?|zw(ö)lf (uhr)?"
+    [ regex "mittags?|zw(ö)lf (uhr)?|mittagszeit"
     ]
   , prod = \_ -> tt $ hour False 12
   }
@@ -1343,6 +1343,21 @@ ruleNextNCycle = Rule
       _ -> Nothing
   }
 
+ruleNext2Cycle :: Rule
+ruleNext2Cycle = Rule
+  { name = "next both <cycle>"
+  , pattern =
+    [ regex "nächsten beiden"
+    , dimension TimeGrain
+    ]
+  , prod = \tokens -> case tokens of
+      (_:Token TimeGrain grain:_) ->
+        tt $ cycleNth grain 2
+      _ -> Nothing
+  }
+
+
+
 ruleADuration :: Rule
 ruleADuration = Rule
   { name = "a <duration>"
@@ -1779,7 +1794,7 @@ ruleMmddyyyy :: Rule
 ruleMmddyyyy = Rule
   { name = "mm/dd/yyyy"
   , pattern =
-    [ regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.(\\d{2,4})"
+    [ regex "([012]?[1-9]|10|20|30|31)\\.(0?[1-9]|10|11|12)\\.|\" \"(\\d{2,4})"
     ]
   , prod = \tokens -> case tokens of
       (Token RegexMatch (GroupMatch (m1:m2:m3:_)):_) -> do
@@ -1895,6 +1910,7 @@ rules =
   , ruleNextCycle
   , ruleAfterNextCycle
   , ruleNextNCycle
+  , ruleNext2Cycle
   , ruleNextTime
   , ruleNight
   , ruleNoon

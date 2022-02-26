@@ -527,6 +527,9 @@ allExamples = concat
              [ "nächste 3 stunden"
              , "nächsten drei stunden"
              ]
+  , examples (datetimeInterval ((2013, 2, 12, 5, 0, 0), (2013, 2, 12, 7, 0, 0)) Hour)
+             [ "nächsten beiden stunden"
+             ]
   , examples (datetimeInterval ((2013, 2, 10, 0, 0, 0), (2013, 2, 12, 0, 0, 0)) Day)
              [ "letzte 2 tage"
              , "letzten zwei tage"
